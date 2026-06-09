@@ -1,0 +1,23 @@
+# deps
+node_modules/
+.pnp
+.pnp.js
+
+# build
+.next/
+out/
+dist/
+
+# env — NUNCA sobe para o git
+.env
+.env.local
+.env.*.local
+
+# banco SQLite local
+prisma/dev.db
+prisma/dev.db-journal
+
+# misc
+.DS_Store
+*.pem
+.vercel

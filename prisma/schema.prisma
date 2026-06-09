@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // "sqlite" para dev local · "postgresql" para produção
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Moto {
+  id          String     @id @default(cuid())
+  marca       String
+  modelo      String
+  ano         Int
+  km          Int
+  preco       Float
+  descricao   String?
+  status      String     @default("DISPONIVEL")
+  destaque    Boolean    @default(false)
+  revisada    Boolean    @default(false)
+  garantia    Boolean    @default(false)
+  procedencia String?
+  fotos       Foto[]
+  leads       Lead[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([marca])
+  @@index([status])
+  @@index([destaque])
+}
+
+model Foto {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  ordem     Int      @default(0)
+  motoId    String
+  moto      Moto     @relation(fields: [motoId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([motoId])
+}
+
+model Lead {
+  id              String   @id @default(cuid())
+  nome            String?
+  telefone        String?
+  motoId          String
+  moto            Moto     @relation(fields: [motoId], references: [id])
+  precoMoto       Float
+  valorEntrada    Float
+  valorFinanciado Float
+  numeroParcelas  Int
+  valorParcela    Float
+  totalPago       Float
+  taxaJuros       Float
+  status          String   @default("NOVO")
+  origem          String   @default("site")
+  observacao      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([motoId])
+  @@index([createdAt])
+}
+
+model Configuracao {
+  id             String   @id @default(cuid())
+  taxaJurosNova  Float    @default(1.49)
+  taxaJurosUsada Float    @default(1.99)
+  entradaMinima  Float    @default(20.0)
+  whatsappNumero String   @default("5511999999999")
+  nomeEmpresa    String   @default("MotoShop Premium")
+  logotipoUrl    String?
+  corPrimaria    String   @default("#f97316")
+  updatedAt      DateTime @updatedAt
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  senha     String
+  nome      String
+  createdAt DateTime @default(now())
+}
