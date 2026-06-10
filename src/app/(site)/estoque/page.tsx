@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Confira nossas motos disponíveis com financiamento facilitado.",
 };
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 interface SearchParams {
   marca?: string;

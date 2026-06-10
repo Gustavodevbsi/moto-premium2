@@ -8,7 +8,7 @@ import { Depoimentos } from "@/components/depoimentos";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 async function getDados() {
   const [motos, config] = await Promise.all([
