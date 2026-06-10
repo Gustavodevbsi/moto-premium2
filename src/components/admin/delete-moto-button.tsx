@@ -8,11 +8,21 @@ export function DeleteMotoButton({ id, nome }: { id: string; nome: string }) {
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
-    if (!confirm(`Deseja realmente excluir "${nome}"? Esta ação é irreversível.`)) return;
+    if (!confirm(`Deseja realmente excluir "${nome}"?\n\nEsta ação é irreversível.`)) return;
     setLoading(true);
-    await fetch(`/api/motos/${id}`, { method: "DELETE" });
-    router.refresh();
-    setLoading(false);
+    try {
+      const res = await fetch(`/api/motos/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Erro ao excluir. Tente novamente.");
+        return;
+      }
+      router.refresh();
+    } catch {
+      alert("Erro de conexão. Verifique sua internet e tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

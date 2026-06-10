@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, Bike, Users, Settings, LogOut, ExternalLink } from "lucide-react";
-import { MotoIcon } from "@/components/icons/moto-icon";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -26,10 +26,8 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="px-5 h-16 flex items-center border-b">
         <Link href="/admin" className="flex items-center gap-2.5 font-display font-bold text-base">
-          <div className="w-7 h-7 rounded-lg gradient-brand flex items-center justify-center shadow-brand-sm">
-            <MotoIcon className="w-4 h-3.5 text-white" strokeWidth={1.8} />
-          </div>
-          Admin<span className="text-gradient">Panel</span>
+          <Image src="/logo-prime.png" alt="Prime Motos" width={32} height={32} className="rounded-full" />
+          Prime<span className="text-gradient"> Motos</span>
         </Link>
       </div>
 

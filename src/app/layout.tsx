@@ -20,16 +20,16 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   title: {
-    default: "MotoShop Premium | Financiamento Facilitado",
-    template: "%s | MotoShop Premium",
+    default: "Prime Motos | Financiamento Facilitado em Carpina-PE",
+    template: "%s | Prime Motos",
   },
   description:
-    "Encontre sua moto ideal com financiamento facilitado. Simule suas parcelas e saia com sua moto hoje.",
-  keywords: ["motos", "financiamento de motos", "comprar moto", "simulação financiamento"],
+    "Prime Motos em Carpina-PE. Encontre sua moto ideal com financiamento facilitado. Simule suas parcelas e saia com sua moto hoje.",
+  keywords: ["motos", "financiamento de motos", "comprar moto", "Prime Motos", "Carpina", "Pernambuco"],
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    siteName: "MotoShop Premium",
+    siteName: "Prime Motos",
   },
   // Impede que Safari/Chrome mobile reforje números de telefone em links
   formatDetection: {

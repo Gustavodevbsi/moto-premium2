@@ -22,8 +22,8 @@ async function main() {
         taxaJurosNova: 1.49,
         taxaJurosUsada: 1.99,
         entradaMinima: 20,
-        whatsappNumero: "5511999999999",
-        nomeEmpresa: "MotoShop Premium",
+        whatsappNumero: "5581995473370",
+        nomeEmpresa: "Prime Motos",
       },
     });
   }

@@ -45,6 +45,12 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
 
-  await prisma.moto.delete({ where: { id: params.id } });
-  return NextResponse.json({ ok: true });
+  try {
+    // Remove leads vinculados antes (FK sem cascade no SQLite)
+    await prisma.lead.deleteMany({ where: { motoId: params.id } });
+    await prisma.moto.delete({ where: { id: params.id } });
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Erro ao excluir" }, { status: 500 });
+  }
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
@@ -93,11 +93,11 @@ export function FiltrosEstoque({ marcas, current }: FiltrosProps) {
       </div>
 
       <div className="space-y-3">
-        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">KM máximo</label>
+        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">KM mÃ¡ximo</label>
         <input type="number" placeholder="Ex: 50000" value={filtros.km_max} onChange={(e) => setFiltros((p) => ({ ...p, km_max: e.target.value }))} className="w-full px-3 py-2 rounded-lg border bg-background text-sm" />
       </div>
 
-      <button onClick={aplicar} className="w-full py-2.5 rounded-xl gradient-orange text-white font-bold text-sm hover:opacity-90 transition-opacity">
+      <button onClick={aplicar} className="w-full py-2.5 rounded-xl gradient-brand text-white font-bold text-sm hover:opacity-90 transition-opacity">
         Aplicar Filtros
       </button>
     </div>
@@ -128,3 +128,4 @@ export function FiltrosEstoque({ marcas, current }: FiltrosProps) {
     </>
   );
 }
+

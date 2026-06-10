@@ -57,7 +57,7 @@ export default async function MotoPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
         {/* Coluna esquerda */}
         <div className="space-y-6">
-          <Galeria fotos={moto.fotos} modelo={nomeCompleto} />
+          <Galeria fotos={moto.fotos.map((f) => ({ url: f.url, alt: f.alt ?? undefined }))} modelo={nomeCompleto} />
 
           {/* Info */}
           <div className="rounded-2xl border bg-card p-6 space-y-4">
@@ -137,7 +137,7 @@ export default async function MotoPage({ params }: Props) {
             taxaNova={config?.taxaJurosNova ?? 1.49}
             taxaUsada={config?.taxaJurosUsada ?? 1.99}
             entradaMinPct={config?.entradaMinima ?? 20}
-            whatsapp={config?.whatsappNumero ?? "5511999999999"}
+            whatsapp={config?.whatsappNumero ?? "5581995473370"}
           />
         </div>
       </div>

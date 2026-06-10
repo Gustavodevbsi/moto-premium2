@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { anoAtual } from "@/lib/utils";
-import { Plus, X, Upload } from "lucide-react";
+import { X, Upload, ImagePlus, Loader2 } from "lucide-react";
 
 interface MotoFormProps {
   initial?: {
@@ -45,17 +45,36 @@ export function MotoForm({ initial }: MotoFormProps) {
   const [fotos, setFotos] = useState<{ url: string; alt: string }[]>(
     initial?.fotos?.map((f) => ({ url: f.url, alt: f.alt || "" })) || []
   );
-  const [novaFotoUrl, setNovaFotoUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadErro, setUploadErro] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const update = (k: string, v: any) => setForm((p) => ({ ...p, [k]: v }));
 
-  const addFoto = () => {
-    if (!novaFotoUrl.trim()) return;
-    setFotos((p) => [...p, { url: novaFotoUrl.trim(), alt: "" }]);
-    setNovaFotoUrl("");
-  };
-
   const removeFoto = (i: number) => setFotos((p) => p.filter((_, idx) => idx !== i));
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setUploading(true);
+    setUploadErro("");
+
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (res.ok) {
+        const { url } = await res.json();
+        setFotos((p) => [...p, { url, alt: "" }]);
+      } else {
+        const { error } = await res.json();
+        setUploadErro(error || "Erro ao enviar imagem");
+      }
+    }
+
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -161,23 +180,35 @@ export function MotoForm({ initial }: MotoFormProps) {
       <div className="rounded-2xl border bg-card p-6 space-y-4">
         <h3 className="font-bold border-b pb-3">Fotos</h3>
 
-        <div className="flex gap-2">
-          <input
-            type="url"
-            value={novaFotoUrl}
-            onChange={(e) => setNovaFotoUrl(e.target.value)}
-            placeholder="https://... URL da imagem"
-            className="flex-1 px-3 py-2.5 rounded-xl border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFoto())}
-          />
-          <button
-            type="button"
-            onClick={addFoto}
-            className="px-4 py-2.5 rounded-xl gradient-orange text-white font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-1"
-          >
-            <Plus className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Área de upload */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          className="hidden"
+          onChange={handleFileChange}
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="w-full border-2 border-dashed rounded-xl py-8 flex flex-col items-center gap-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors disabled:opacity-60"
+        >
+          {uploading ? (
+            <Loader2 className="w-8 h-8 animate-spin" />
+          ) : (
+            <ImagePlus className="w-8 h-8" />
+          )}
+          <span className="text-sm font-medium">
+            {uploading ? "Enviando..." : "Clique para adicionar fotos"}
+          </span>
+          <span className="text-xs">JPG, PNG ou WebP · máx. 5MB por foto · várias de uma vez</span>
+        </button>
+
+        {uploadErro && (
+          <p className="text-sm text-destructive">{uploadErro}</p>
+        )}
 
         {fotos.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -213,7 +244,7 @@ export function MotoForm({ initial }: MotoFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 py-3 rounded-xl gradient-orange text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="flex-1 py-3 rounded-xl gradient-brand text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
         >
           {loading ? "Salvando..." : initial?.id ? "Salvar Alterações" : "Cadastrar Moto"}
         </button>

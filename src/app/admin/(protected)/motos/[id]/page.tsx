@@ -16,7 +16,12 @@ export default async function EditarMotoPage({ params }: { params: { id: string 
         <h1 className="text-2xl font-extrabold">Editar Moto</h1>
         <p className="text-muted-foreground">{moto.marca} {moto.modelo} {moto.ano}</p>
       </div>
-      <MotoForm initial={{ ...moto, fotos: moto.fotos }} />
+      <MotoForm initial={{
+        ...moto,
+        descricao: moto.descricao ?? undefined,
+        procedencia: moto.procedencia ?? undefined,
+        fotos: moto.fotos.map((f) => ({ ...f, alt: f.alt ?? undefined })),
+      }} />
     </div>
   );
 }

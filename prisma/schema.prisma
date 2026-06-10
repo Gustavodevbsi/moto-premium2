@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  // "sqlite" para dev local · "postgresql" para produção
+  // dev local: "sqlite" · produção (Vercel): troque para "postgresql"
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -46,6 +46,7 @@ model Foto {
 model Lead {
   id              String   @id @default(cuid())
   nome            String?
+  cpf             String?
   telefone        String?
   motoId          String
   moto            Moto     @relation(fields: [motoId], references: [id])
@@ -72,8 +73,8 @@ model Configuracao {
   taxaJurosNova  Float    @default(1.49)
   taxaJurosUsada Float    @default(1.99)
   entradaMinima  Float    @default(20.0)
-  whatsappNumero String   @default("5511999999999")
-  nomeEmpresa    String   @default("MotoShop Premium")
+  whatsappNumero String   @default("5581995473370")
+  nomeEmpresa    String   @default("Prime Motos")
   logotipoUrl    String?
   corPrimaria    String   @default("#f97316")
   updatedAt      DateTime @updatedAt

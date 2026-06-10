@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { z } from "zod";
+import { createHash } from "crypto";
+
+function hashCpf(cpf: string): string {
+  return createHash("sha256").update(cpf.replace(/\D/g, "")).digest("hex");
+}
 
 const schema = z.object({
   motoId: z.string().cuid(),
@@ -13,6 +18,7 @@ const schema = z.object({
   totalPago: z.number().positive().max(20_000_000),
   taxaJuros: z.number().min(0.1).max(10),
   nome: z.string().max(120).optional(),
+  cpf: z.string().max(14).optional(),
   telefone: z.string().max(20).optional(),
 });
 
@@ -40,7 +46,11 @@ export async function POST(req: NextRequest) {
     const motoExiste = await prisma.moto.findUnique({ where: { id: data.motoId }, select: { id: true } });
     if (!motoExiste) return NextResponse.json({ error: "Moto não encontrada" }, { status: 404 });
 
-    const lead = await prisma.lead.create({ data });
+    const payload = {
+      ...data,
+      cpf: data.cpf ? hashCpf(data.cpf) : undefined,
+    };
+    const lead = await prisma.lead.create({ data: payload });
     return NextResponse.json(lead, { status: 201 });
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -60,8 +70,12 @@ export async function GET(req: NextRequest) {
   const status = searchParams.get("status");
 
   try {
-    const where: any = {};
-    if (status) where.status = status;
+    const VALID_STATUS = ["NOVO", "EM_ATENDIMENTO", "CONVERTIDO", "PERDIDO"] as const;
+    type LeadStatus = typeof VALID_STATUS[number];
+    const where: { status?: LeadStatus } = {};
+    if (status && VALID_STATUS.includes(status as LeadStatus)) {
+      where.status = status as LeadStatus;
+    }
 
     const [leads, total] = await Promise.all([
       prisma.lead.findMany({

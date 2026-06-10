@@ -3,12 +3,15 @@ import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function WhatsAppButton({ numero }: { numero?: string }) {
-  const [telefone, setTelefone] = useState(numero || "5511999999999");
+  const [telefone, setTelefone] = useState(numero || "5581995473370");
 
   useEffect(() => {
     fetch("/api/config")
       .then((r) => r.json())
-      .then((d) => d.whatsappNumero && setTelefone(d.whatsappNumero))
+      .then((d) => {
+        const num = d.whatsappNumero?.replace(/\D/g, "");
+        if (num && num.length >= 10) setTelefone(num);
+      })
       .catch(() => {});
   }, []);
 

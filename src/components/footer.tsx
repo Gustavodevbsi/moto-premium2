@@ -1,6 +1,6 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { MotoIcon } from "@/components/icons/moto-icon";
 
 export function Footer() {
   return (
@@ -8,14 +8,12 @@ export function Footer() {
       <div className="container py-14 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Marca */}
         <div className="space-y-4">
-          <Link href="/" className="flex items-center gap-2.5 font-display font-bold text-lg w-fit">
-            <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center">
-              <MotoIcon className="w-5 h-4 text-white" strokeWidth={1.8} />
-            </div>
-            Moto<span className="text-gradient">Shop</span>
+          <Link href="/" className="flex items-center gap-2 font-display font-bold text-lg w-fit">
+            <Image src="/logo-prime.png" alt="Prime Motos" width={36} height={36} className="rounded-full" />
+            Prime<span className="text-gradient"> Motos</span>
           </Link>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-            Especialistas em financiamento de motos. Transparência, agilidade e as menores taxas da região.
+            Especialistas em motos em Carpina-PE. Transparência, agilidade e as melhores condições de financiamento.
           </p>
         </div>
 
@@ -44,15 +42,15 @@ export function Footer() {
           <ul className="space-y-2.5 text-sm text-muted-foreground">
             <li className="flex items-center gap-2.5">
               <Phone className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <span suppressHydrationWarning>(11) 9 9999-9999</span>
+              <span suppressHydrationWarning>(81) 9 9547-3370</span>
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              contato@motoshop.com.br
+              contato@primemotos.com.br
             </li>
             <li className="flex items-center gap-2.5">
               <MapPin className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              São Paulo, SP
+              Av. Agamenon Magalhães - São José, Carpina/PE · 55810-000
             </li>
           </ul>
         </div>
@@ -60,10 +58,22 @@ export function Footer() {
 
       <div className="border-t">
         <div className="container py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} MotoShop Premium. Todos os direitos reservados.</p>
-          <p>CNPJ 00.000.000/0001-00</p>
+          <p>© {new Date().getFullYear()} Prime Motos - Carpina/PE. Todos os direitos reservados.</p>
+          <a
+            href={`https://wa.me/5581991082261?text=${encodeURIComponent("Olá! 👋 Vi o sistema da Prime Motos e fiquei impressionado com a qualidade. Gostaria de saber mais sobre os serviços da Assessoria Falcon!")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 hover:text-foreground transition-colors group"
+          >
+            Desenvolvido por
+            <span className="font-semibold text-indigo-500 group-hover:text-indigo-400 transition-colors">
+              Assessoria Falcon
+            </span>
+            <span className="text-indigo-500/60 group-hover:text-indigo-400 transition-colors">🦅</span>
+          </a>
         </div>
       </div>
     </footer>
   );
 }
+

@@ -125,12 +125,12 @@ export function ConfigForm({ initial }: ConfigFormProps) {
         <Phone className="w-4 h-4 text-primary" />,
         field(
           "Número do WhatsApp",
-          "Formato internacional sem espaços ou símbolos: 5511999999999",
+          "Formato internacional sem espaços ou símbolos: 5581999999999",
           <input
             type="text"
             value={form.whatsappNumero}
             onChange={(e) => update("whatsappNumero", e.target.value)}
-            placeholder="5511999999999"
+            placeholder="5581999999999"
             className="w-full px-3 py-2.5 rounded-xl border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
         )
@@ -154,7 +154,7 @@ export function ConfigForm({ initial }: ConfigFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="flex items-center justify-center gap-2 w-full py-3 rounded-xl gradient-orange text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="flex items-center justify-center gap-2 w-full py-3 rounded-xl gradient-brand text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
       >
         <Save className="w-4 h-4" />
         {loading ? "Salvando..." : "Salvar Configurações"}

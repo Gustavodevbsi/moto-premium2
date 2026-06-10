@@ -19,26 +19,36 @@ interface SearchParams {
   preco_max?: string;
   km_max?: string;
   page?: string;
+  [key: string]: string | undefined;
+}
+
+function toInt(v: string | undefined): number | undefined {
+  const n = Number(v);
+  return v && !isNaN(n) ? Math.floor(n) : undefined;
+}
+
+function toFloat(v: string | undefined): number | undefined {
+  const n = Number(v);
+  return v && !isNaN(n) ? n : undefined;
 }
 
 async function getMotos(params: SearchParams) {
-  const where: any = { status: "DISPONIVEL" };
+  const anoMin = toInt(params.ano_min);
+  const anoMax = toInt(params.ano_max);
+  const precoMin = toFloat(params.preco_min);
+  const precoMax = toFloat(params.preco_max);
+  const kmMax = toInt(params.km_max);
 
-  if (params.marca) where.marca = { contains: params.marca };
-  if (params.modelo) where.modelo = { contains: params.modelo };
-  if (params.ano_min || params.ano_max) {
-    where.ano = {};
-    if (params.ano_min) where.ano.gte = Number(params.ano_min);
-    if (params.ano_max) where.ano.lte = Number(params.ano_max);
-  }
-  if (params.preco_min || params.preco_max) {
-    where.preco = {};
-    if (params.preco_min) where.preco.gte = Number(params.preco_min);
-    if (params.preco_max) where.preco.lte = Number(params.preco_max);
-  }
-  if (params.km_max) where.km = { lte: Number(params.km_max) };
+  const where = {
+    status: "DISPONIVEL",
+    ...(params.marca ? { marca: { contains: params.marca } } : {}),
+    ...(params.modelo ? { modelo: { contains: params.modelo } } : {}),
+    ...((anoMin || anoMax) ? { ano: { ...(anoMin ? { gte: anoMin } : {}), ...(anoMax ? { lte: anoMax } : {}) } } : {}),
+    ...((precoMin || precoMax) ? { preco: { ...(precoMin ? { gte: precoMin } : {}), ...(precoMax ? { lte: precoMax } : {}) } } : {}),
+    ...(kmMax ? { km: { lte: kmMax } } : {}),
+  };
 
-  const page = Number(params.page || 1);
+  const page = Math.max(1, toInt(params.page) ?? 1);
   const perPage = 12;
 
   const [motos, total] = await Promise.all([
@@ -104,18 +114,29 @@ export default async function EstoquePage({ searchParams }: { searchParams: Sear
 
           {/* Paginação */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 pt-4">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                <a
-                  key={p}
-                  href={`?${new URLSearchParams({ ...searchParams, page: String(p) })}`}
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${
-                    p === page ? "gradient-orange text-white" : "border hover:border-primary"
-                  }`}
-                >
-                  {p}
-                </a>
-              ))}
+            <div className="flex items-center justify-center gap-2 pt-4 flex-wrap">
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+                .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                  if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…");
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((p, idx) =>
+                  p === "…" ? (
+                    <span key={`ellipsis-${idx}`} className="w-10 h-10 flex items-center justify-center text-muted-foreground text-sm">…</span>
+                  ) : (
+                    <a
+                      key={p}
+                      href={`?${new URLSearchParams({ ...searchParams, page: String(p) })}`}
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${
+                        p === page ? "gradient-brand text-white border-transparent" : "border hover:border-primary"
+                      }`}
+                    >
+                      {p}
+                    </a>
+                  )
+                )}
             </div>
           )}
         </div>

@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { MotoIcon } from "@/components/icons/moto-icon";
 
 function ThemeToggle({ scrolled }: { scrolled: boolean }) {
   const { theme, setTheme } = useTheme();
@@ -51,12 +51,10 @@ export function Navbar() {
     )}>
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 font-display font-bold text-lg">
-          <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center shadow-brand-sm">
-            <MotoIcon className="w-5 h-4 text-white" strokeWidth={1.8} />
-          </div>
+        <Link href="/" className="flex items-center gap-2 font-display font-bold text-lg">
+          <Image src="/logo-prime.png" alt="Prime Motos" width={40} height={40} className="rounded-full" />
           <span className={cn(scrolled ? "text-foreground" : "text-white")}>
-            Moto<span className="text-gradient">Shop</span>
+            Prime<span className="text-gradient"> Motos</span>
           </span>
         </Link>
 
@@ -125,3 +123,4 @@ export function Navbar() {
     </header>
   );
 }
+

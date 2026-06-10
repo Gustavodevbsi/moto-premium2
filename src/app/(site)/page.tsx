@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { MotoIcon } from "@/components/icons/moto-icon";
 import { MotoCard } from "@/components/moto-card";
 import { Simulador } from "@/components/simulador";
@@ -67,7 +67,7 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* Simulador rápido */}
+      {/* Simulador rÃ¡pido */}
       <section id="simulador" className="bg-muted/50 py-16">
         <div className="container max-w-2xl">
           <div className="text-center mb-10">
@@ -104,10 +104,11 @@ function SimuladorRapido({ config }: { config: any }) {
       </div>
       <Link
         href="/estoque"
-        className="flex items-center justify-center gap-2 w-full py-4 rounded-xl gradient-orange text-white font-bold hover:opacity-90 transition-opacity"
+        className="flex items-center justify-center gap-2 w-full py-4 rounded-xl gradient-brand text-white font-bold hover:opacity-90 transition-opacity"
       >
         Ver Estoque Completo <ArrowRight className="w-5 h-5" />
       </Link>
     </div>
   );
 }
+
