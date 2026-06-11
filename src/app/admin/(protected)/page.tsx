@@ -98,10 +98,10 @@ export default async function AdminDashboard() {
               <div key={lead.id} className="p-4 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm truncate">
-                    {lead.moto.marca} {lead.moto.modelo}
+                    {lead.nome || "Cliente não identificado"}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {lead.numeroParcelas}x de {formatarMoeda(lead.valorParcela)} · Entrada {formatarMoeda(lead.valorEntrada)}
+                  <p className="text-xs text-muted-foreground truncate">
+                    {lead.moto.marca} {lead.moto.modelo} · {lead.numeroParcelas}x de {formatarMoeda(lead.valorParcela)}
                   </p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-bold ${STATUS_COLORS[lead.status] || "bg-muted"}`}>
