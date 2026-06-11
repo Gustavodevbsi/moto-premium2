@@ -2,7 +2,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Bike, Users, Settings, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Bike, Users, Settings, LogOut, ExternalLink, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -15,6 +16,11 @@ const links = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
+
+  function toggleTheme() {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -57,6 +63,13 @@ export function AdminSidebar() {
 
         {/* Footer */}
         <div className="px-3 py-4 border-t space-y-0.5">
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all w-full"
+          >
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === "dark" ? "Tema claro" : "Tema escuro"}
+          </button>
           <Link
             href="/"
             target="_blank"
@@ -93,6 +106,13 @@ export function AdminSidebar() {
             </Link>
           );
         })}
+        <button
+          onClick={toggleTheme}
+          className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-medium text-muted-foreground transition-all"
+        >
+          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          Tema
+        </button>
         <button
           onClick={logout}
           className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-medium text-muted-foreground transition-all"
