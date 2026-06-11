@@ -15,9 +15,13 @@ export function WhatsAppButton({ numero }: { numero?: string }) {
       .catch(() => {});
   }, []);
 
+  const msg = encodeURIComponent(
+    "Olá! 👋 Vim pelo site da Prime Motos e gostaria de saber mais sobre as motos disponíveis e condições de financiamento. Pode me ajudar?"
+  );
+
   return (
     <a
-      href={`https://wa.me/${telefone}`}
+      href={`https://wa.me/${telefone}?text=${msg}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale pelo WhatsApp"
