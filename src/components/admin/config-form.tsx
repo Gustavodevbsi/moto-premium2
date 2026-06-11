@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Percent, Phone, Building2 } from "lucide-react";
+import { Save, Percent, Phone, Building2, RefreshCw, TrendingUp } from "lucide-react";
 
 interface ConfigFormProps {
   initial: {
@@ -21,8 +21,34 @@ export function ConfigForm({ initial }: ConfigFormProps) {
   const [form, setForm] = useState(initial);
   const [loading, setLoading] = useState(false);
   const [ok, setOk] = useState(false);
+  const [fetchingTaxas, setFetchingTaxas] = useState(false);
+  const [taxasMercado, setTaxasMercado] = useState<{ taxaJurosNova: number | null; taxaJurosUsada: number | null; atualizadoEm: string } | null>(null);
+  const [taxasErro, setTaxasErro] = useState("");
 
   const update = (k: string, v: any) => setForm((p) => ({ ...p, [k]: v }));
+
+  async function buscarTaxasMercado() {
+    setFetchingTaxas(true);
+    setTaxasErro("");
+    setTaxasMercado(null);
+    try {
+      const res = await fetch("/api/taxas-mercado");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro desconhecido");
+      setTaxasMercado(data);
+    } catch (e: any) {
+      setTaxasErro(e.message || "Não foi possível buscar as taxas.");
+    } finally {
+      setFetchingTaxas(false);
+    }
+  }
+
+  function aplicarTaxas() {
+    if (!taxasMercado) return;
+    if (taxasMercado.taxaJurosNova  !== null) update("taxaJurosNova",  taxasMercado.taxaJurosNova);
+    if (taxasMercado.taxaJurosUsada !== null) update("taxaJurosUsada", taxasMercado.taxaJurosUsada);
+    setTaxasMercado(null);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,6 +95,58 @@ export function ConfigForm({ initial }: ConfigFormProps) {
         "Taxas de Financiamento",
         <Percent className="w-4 h-4 text-primary" />,
         <>
+          {/* Busca de taxas do mercado */}
+          <div className="rounded-xl border bg-muted/40 p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <p className="text-sm font-semibold">Taxas do mercado (Banco Central)</p>
+                <p className="text-xs text-muted-foreground">Média nacional — veículos · pessoas físicas</p>
+              </div>
+              <button
+                type="button"
+                onClick={buscarTaxasMercado}
+                disabled={fetchingTaxas}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-background text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${fetchingTaxas ? "animate-spin" : ""}`} />
+                {fetchingTaxas ? "Buscando..." : "Buscar taxas"}
+              </button>
+            </div>
+
+            {taxasErro && (
+              <p className="text-xs text-red-500">{taxasErro}</p>
+            )}
+
+            {taxasMercado && (
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="rounded-lg bg-background border px-3 py-2">
+                    <p className="text-xs text-muted-foreground">Motos novas</p>
+                    <p className="font-bold text-primary">
+                      {taxasMercado.taxaJurosNova !== null ? `${taxasMercado.taxaJurosNova}% a.m.` : "—"}
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-background border px-3 py-2">
+                    <p className="text-xs text-muted-foreground">Motos usadas</p>
+                    <p className="font-bold text-primary">
+                      {taxasMercado.taxaJurosUsada !== null ? `${taxasMercado.taxaJurosUsada}% a.m.` : "—"}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">Atualizado em {taxasMercado.atualizadoEm} · Fonte: {taxasMercado.fonte}</p>
+                <button
+                  type="button"
+                  onClick={aplicarTaxas}
+                  className="flex items-center gap-2 w-full justify-center px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+                >
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  Aplicar taxas do mercado
+                </button>
+                <p className="text-xs text-muted-foreground text-center">Você pode editar os valores depois de aplicar</p>
+              </div>
+            )}
+          </div>
+
           {field(
             "Taxa para Motos Novas (% ao mês)",
             `Aplicada para motos do ano ${new Date().getFullYear()} em diante`,
