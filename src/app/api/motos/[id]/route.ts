@@ -3,6 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { getSession } from "@/lib/auth";
 
+const fotoSchema = z.object({
+  url: z.string(),
+  alt: z.string().optional(),
+});
+
 const updateSchema = z.object({
   marca: z.string().min(1).optional(),
   modelo: z.string().min(1).optional(),
@@ -15,6 +20,7 @@ const updateSchema = z.object({
   revisada: z.boolean().optional(),
   garantia: z.boolean().optional(),
   procedencia: z.string().optional(),
+  fotos: z.array(fotoSchema).optional(),
 });
 
 export async function GET(_: NextRequest, { params }: { params: { id: string } }) {
@@ -32,8 +38,34 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
   try {
     const body = await req.json();
-    const data = updateSchema.parse(body);
-    const moto = await prisma.moto.update({ where: { id: params.id }, data, include: { fotos: true } });
+    const { fotos, ...rest } = updateSchema.parse(body);
+
+    const moto = await prisma.$transaction(async (tx) => {
+      const updated = await tx.moto.update({
+        where: { id: params.id },
+        data: rest,
+      });
+
+      if (fotos !== undefined) {
+        await tx.foto.deleteMany({ where: { motoId: params.id } });
+        if (fotos.length > 0) {
+          await tx.foto.createMany({
+            data: fotos.map((f, i) => ({
+              url: f.url,
+              alt: f.alt || "",
+              ordem: i,
+              motoId: params.id,
+            })),
+          });
+        }
+      }
+
+      return tx.moto.findUnique({
+        where: { id: updated.id },
+        include: { fotos: { orderBy: { ordem: "asc" } } },
+      });
+    });
+
     return NextResponse.json(moto);
   } catch (err) {
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors }, { status: 422 });
