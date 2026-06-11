@@ -14,7 +14,7 @@ export default async function ProtectedAdminLayout({
     <div className="flex min-h-screen bg-muted/30">
       <AdminSidebar />
       <main className="flex-1 overflow-auto">
-        <div className="p-6 md:p-8 max-w-7xl mx-auto">
+        <div className="p-6 pb-24 md:pb-8 md:p-8 max-w-7xl mx-auto">
           {children}
         </div>
       </main>
