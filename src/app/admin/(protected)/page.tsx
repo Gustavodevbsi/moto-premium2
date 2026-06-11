@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatarMoeda } from "@/lib/financiamento";
-import { Bike, PhoneCall, BadgeCheck, Target, Clock, XCircle } from "lucide-react";
+import { Bike, PhoneCall, BadgeCheck, Target, Clock, XCircle, Users } from "lucide-react";
 import { TrialCountdown } from "@/components/admin/trial-countdown";
 
 export const dynamic = "force-dynamic";
