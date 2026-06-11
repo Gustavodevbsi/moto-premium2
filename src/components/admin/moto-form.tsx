@@ -126,9 +126,9 @@ export function MotoForm({ initial }: MotoFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {field("Marca *", input({ value: form.marca, onChange: (e) => update("marca", e.target.value), placeholder: "Honda, Yamaha, BMW...", required: true }))}
           {field("Modelo *", input({ value: form.modelo, onChange: (e) => update("modelo", e.target.value), placeholder: "CB 500F, MT-07, R1200...", required: true }))}
-          {field("Ano *", input({ type: "number", value: form.ano, onChange: (e) => update("ano", Number(e.target.value)), min: 1990, max: anoAtual() + 1, required: true }))}
-          {field("Quilometragem *", input({ type: "number", value: form.km, onChange: (e) => update("km", Number(e.target.value)), min: 0, required: true }))}
-          {field("Preço *", input({ type: "number", value: form.preco, onChange: (e) => update("preco", Number(e.target.value)), min: 1, step: 100, required: true }))}
+          {field("Ano *", input({ type: "text", inputMode: "numeric", value: String(form.ano), onChange: (e) => update("ano", Number(e.target.value.replace(/\D/g, "")) || anoAtual()), placeholder: String(anoAtual()), required: true }))}
+          {field("Quilometragem *", input({ type: "text", inputMode: "numeric", value: form.km === 0 ? "" : String(form.km), onChange: (e) => update("km", Number(e.target.value.replace(/\D/g, "")) || 0), placeholder: "Ex: 15000", required: true }))}
+          {field("Preço *", input({ type: "text", inputMode: "numeric", value: form.preco === 0 ? "" : String(form.preco), onChange: (e) => update("preco", Number(e.target.value.replace(/\D/g, "")) || 0), placeholder: "Ex: 12500", required: true }))}
           {field("Procedência", input({ value: form.procedencia, onChange: (e) => update("procedencia", e.target.value), placeholder: "Nacional, Importado..." }))}
         </div>
 
