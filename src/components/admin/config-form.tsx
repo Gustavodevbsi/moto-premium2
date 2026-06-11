@@ -152,12 +152,12 @@ export function ConfigForm({ initial }: ConfigFormProps) {
             `Aplicada para motos do ano ${new Date().getFullYear()} em diante`,
             <div className="relative">
               <input
-                type="number"
-                step="0.01"
-                min="0.1"
-                max="10"
+                type="text"
+                inputMode="decimal"
                 value={form.taxaJurosNova}
-                onChange={(e) => update("taxaJurosNova", Number(e.target.value))}
+                onChange={(e) => update("taxaJurosNova", e.target.value.replace(/[^0-9.]/g, ""))}
+                onBlur={(e) => update("taxaJurosNova", parseFloat(e.target.value) || 0)}
+                placeholder="Ex: 1.49"
                 className="w-full px-3 py-2.5 pr-8 rounded-xl border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-bold">%</span>
@@ -168,12 +168,12 @@ export function ConfigForm({ initial }: ConfigFormProps) {
             "Aplicada para motos de anos anteriores",
             <div className="relative">
               <input
-                type="number"
-                step="0.01"
-                min="0.1"
-                max="10"
+                type="text"
+                inputMode="decimal"
                 value={form.taxaJurosUsada}
-                onChange={(e) => update("taxaJurosUsada", Number(e.target.value))}
+                onChange={(e) => update("taxaJurosUsada", e.target.value.replace(/[^0-9.]/g, ""))}
+                onBlur={(e) => update("taxaJurosUsada", parseFloat(e.target.value) || 0)}
+                placeholder="Ex: 1.99"
                 className="w-full px-3 py-2.5 pr-8 rounded-xl border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-bold">%</span>
@@ -184,12 +184,12 @@ export function ConfigForm({ initial }: ConfigFormProps) {
             "Percentual mínimo da entrada em relação ao valor da moto",
             <div className="relative">
               <input
-                type="number"
-                step="1"
-                min="0"
-                max="80"
+                type="text"
+                inputMode="numeric"
                 value={form.entradaMinima}
-                onChange={(e) => update("entradaMinima", Number(e.target.value))}
+                onChange={(e) => update("entradaMinima", e.target.value.replace(/[^0-9]/g, ""))}
+                onBlur={(e) => update("entradaMinima", parseInt(e.target.value) || 0)}
+                placeholder="Ex: 20"
                 className="w-full px-3 py-2.5 pr-8 rounded-xl border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-bold">%</span>
