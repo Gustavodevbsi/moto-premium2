@@ -27,7 +27,7 @@ export function Galeria({ fotos, modelo }: GaleriaProps) {
         {/* Principal */}
         <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-muted group">
           {atual.url ? (
-            <Image src={atual.url} alt={atual.alt || modelo} fill className="object-cover" sizes="(max-width: 768px) 100vw, 60vw" priority />
+            <Image src={atual.url} alt={atual.alt || modelo} fill className="object-cover" sizes="(max-width: 768px) 100vw, 60vw" priority quality={90} />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-muted">
               <MotoIcon className="w-24 h-20 text-muted-foreground/20" strokeWidth={1} />
@@ -99,7 +99,7 @@ export function Galeria({ fotos, modelo }: GaleriaProps) {
 
           <div className="relative w-full max-w-4xl aspect-[16/10]" onClick={(e) => e.stopPropagation()}>
             {atual.url ? (
-              <Image src={atual.url} alt={atual.alt || modelo} fill className="object-contain" sizes="100vw" />
+              <Image src={atual.url} alt={atual.alt || modelo} fill className="object-contain" sizes="100vw" quality={95} />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-black/80">
               <MotoIcon className="w-32 h-24 text-white/20" strokeWidth={0.8} />
