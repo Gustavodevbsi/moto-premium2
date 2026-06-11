@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatarMoeda } from "@/lib/financiamento";
 import { LeadStatusSelect } from "@/components/admin/lead-status-select";
+import { ClearLeadsButton } from "@/components/admin/clear-leads-button";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,8 @@ export default async function AdminLeadsPage({
           <p className="text-muted-foreground">{total} lead{total !== 1 ? "s" : ""} capturado{total !== 1 ? "s" : ""}</p>
         </div>
 
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap items-center">
+          <ClearLeadsButton />
           {STATUSES.map((s) => (
             <a
               key={s}
