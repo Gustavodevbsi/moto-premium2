@@ -1,29 +1,29 @@
-import { Zap, ShieldCheck, Wrench, Clock } from "lucide-react";
+import { BadgeCheck, Wrench, CreditCard, HeadphonesIcon } from "lucide-react";
 
 const itens = [
   {
-    icon: Clock,
+    icon: BadgeCheck,
     titulo: "Aprovação em 24h",
     desc: "Análise de crédito rápida sem burocracia",
     cor: "text-indigo-500",
     bg: "bg-indigo-50 dark:bg-indigo-500/10",
   },
   {
-    icon: ShieldCheck,
+    icon: Wrench,
     titulo: "Motos revisadas",
     desc: "100% inspecionadas por mecânicos certificados",
     cor: "text-emerald-500",
     bg: "bg-emerald-50 dark:bg-emerald-500/10",
   },
   {
-    icon: Zap,
+    icon: CreditCard,
     titulo: "Parcelas a partir de R$ 349",
     desc: "Menor taxa de financiamento da região",
     cor: "text-blue-500",
     bg: "bg-blue-50 dark:bg-blue-500/10",
   },
   {
-    icon: Wrench,
+    icon: HeadphonesIcon,
     titulo: "Atendimento dedicado",
     desc: "Um consultor exclusivo para você do início ao fim",
     cor: "text-violet-500",

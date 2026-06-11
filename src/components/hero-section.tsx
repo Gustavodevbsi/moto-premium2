@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Flame } from "lucide-react";
 import { MotoIcon } from "@/components/icons/moto-icon";
 
 export function HeroSection() {
@@ -19,7 +19,7 @@ export function HeroSection() {
         <div className="space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-medium text-indigo-200 animate-fade-up">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <Flame className="w-3.5 h-3.5 text-orange-400" />
             Aprovação em até 24h · Parcelas a partir de R$&nbsp;349
           </div>
 

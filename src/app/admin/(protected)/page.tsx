@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatarMoeda } from "@/lib/financiamento";
 import { Bike, Users, TrendingUp, DollarSign, CheckCircle, Clock, XCircle } from "lucide-react";
+import { TrialCountdown } from "@/components/admin/trial-countdown";
 
 export const dynamic = "force-dynamic";
 
@@ -73,6 +74,11 @@ export default async function AdminDashboard() {
             <p className="text-xs text-muted-foreground">{sub}</p>
           </div>
         ))}
+      </div>
+
+      {/* Trial */}
+      <div className="max-w-xs">
+        <TrialCountdown />
       </div>
 
       {/* Leads recentes */}
