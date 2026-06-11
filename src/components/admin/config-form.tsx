@@ -22,7 +22,7 @@ export function ConfigForm({ initial }: ConfigFormProps) {
   const [loading, setLoading] = useState(false);
   const [ok, setOk] = useState(false);
   const [fetchingTaxas, setFetchingTaxas] = useState(false);
-  const [taxasMercado, setTaxasMercado] = useState<{ taxaJurosNova: number | null; taxaJurosUsada: number | null; atualizadoEm: string } | null>(null);
+  const [taxasMercado, setTaxasMercado] = useState<{ taxaJurosNova: number | null; taxaJurosUsada: number | null; atualizadoEm: string; fonte: string } | null>(null);
   const [taxasErro, setTaxasErro] = useState("");
 
   const update = (k: string, v: any) => setForm((p) => ({ ...p, [k]: v }));
