@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatarMoeda } from "@/lib/financiamento";
-import { Bike, Users, TrendingUp, DollarSign, CheckCircle, Clock, XCircle } from "lucide-react";
+import { Bike, PhoneCall, BadgeCheck, Target, Clock, XCircle } from "lucide-react";
 import { TrialCountdown } from "@/components/admin/trial-countdown";
 
 export const dynamic = "force-dynamic";
@@ -48,9 +48,9 @@ export default async function AdminDashboard() {
 
   const cards = [
     { label: "Total de Motos", value: totalMotos, sub: `${motosDisp} disponíveis`, icon: Bike, color: "bg-orange-500" },
-    { label: "Total de Leads", value: totalLeads, sub: `${leadsNovos} novos`, icon: Users, color: "bg-blue-500" },
-    { label: "Aprovações", value: leadsAprovados, sub: "créditos aprovados", icon: CheckCircle, color: "bg-green-500" },
-    { label: "Taxa Conversão", value: `${totalLeads ? ((leadsAprovados / totalLeads) * 100).toFixed(1) : 0}%`, sub: "leads aprovados", icon: TrendingUp, color: "bg-purple-500" },
+    { label: "Total de Leads", value: totalLeads, sub: `${leadsNovos} novos`, icon: PhoneCall, color: "bg-blue-500" },
+    { label: "Aprovações", value: leadsAprovados, sub: "créditos aprovados", icon: BadgeCheck, color: "bg-green-500" },
+    { label: "Taxa Conversão", value: `${totalLeads ? ((leadsAprovados / totalLeads) * 100).toFixed(1) : 0}%`, sub: "leads aprovados", icon: Target, color: "bg-purple-500" },
   ];
 
   return (

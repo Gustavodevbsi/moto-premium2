@@ -2,15 +2,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Bike, Users, Settings, LogOut, ExternalLink, Sun, Moon } from "lucide-react";
+import { Gauge, Bike, PhoneCall, SlidersHorizontal, LogOut, ExternalLink, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/admin",                  label: "Dashboard",    icon: LayoutDashboard, exact: true },
+  { href: "/admin",                  label: "Dashboard",    icon: Gauge,              exact: true },
   { href: "/admin/motos",            label: "Motos",        icon: Bike },
-  { href: "/admin/leads",            label: "Leads",        icon: Users },
-  { href: "/admin/configuracoes",    label: "Config",       icon: Settings },
+  { href: "/admin/leads",            label: "Leads",        icon: PhoneCall },
+  { href: "/admin/configuracoes",    label: "Config",       icon: SlidersHorizontal },
 ];
 
 export function AdminSidebar() {
