@@ -9,6 +9,7 @@ import {
 } from "@/lib/financiamento";
 import { isMotoNova, cn } from "@/lib/utils";
 import { TrendingUp, ArrowRight, Info, User, CreditCard, CheckCircle2, Banknote, BadgeDollarSign } from "lucide-react";
+import Link from "next/link";
 
 type Modalidade = "financiamento" | "cartao" | "avista";
 
@@ -58,6 +59,7 @@ export function Simulador({
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [cpfTocado, setCpfTocado] = useState(false);
+  const [consentiu, setConsentiu] = useState(false);
 
   const resultado = calcularTabelaPrice({ preco, entrada, parcelas, taxaMensal: taxa });
   const entradaPct = Math.round((entrada / preco) * 100);
@@ -66,9 +68,9 @@ export function Simulador({
   const nomeValido = nome.trim().split(" ").length >= 2;
 
   const podeEnviar =
-    modalidade === "financiamento" ? entradaValida && cpfValido && nomeValido :
-    modalidade === "cartao"        ? nomeValido :
-    nomeValido;
+    modalidade === "financiamento" ? entradaValida && cpfValido && nomeValido && consentiu :
+    modalidade === "cartao"        ? nomeValido && consentiu :
+    nomeValido && consentiu;
 
   const atalho = (pct: number) => {
     const v = Math.round((pct / 100) * preco);
@@ -405,6 +407,23 @@ export function Simulador({
               ? "Seus dados são usados apenas para análise de crédito e não são compartilhados."
               : "Seu nome ajuda o vendedor a te identificar na conversa."}
           </p>
+
+          {/* Consentimento LGPD */}
+          <label className="flex items-start gap-2.5 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={consentiu}
+              onChange={(e) => setConsentiu(e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-border accent-indigo-500 cursor-pointer shrink-0"
+            />
+            <span className="text-[11px] text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors">
+              Autorizo o uso dos meus dados para contato comercial conforme a{" "}
+              <Link href="/privacidade" target="_blank" className="text-indigo-500 underline underline-offset-2 hover:text-indigo-400">
+                Política de Privacidade
+              </Link>
+              .
+            </span>
+          </label>
         </div>
 
         {/* CTA */}

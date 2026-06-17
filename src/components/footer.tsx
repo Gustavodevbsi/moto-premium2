@@ -28,6 +28,7 @@ export function Footer() {
               ["Estoque", "/estoque"],
               ["Simulador", "/#simulador"],
               ["Depoimentos", "/#depoimentos"],
+              ["Política de Privacidade", "/privacidade"],
             ].map(([label, href]) => (
               <li key={href}>
                 <Link href={href} className="text-muted-foreground hover:text-foreground transition-colors">
